@@ -1,0 +1,124 @@
+# =======================
+# Deployment: main
+# =======================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: main
+  labels:
+    app: main
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: main
+  template:
+    metadata:
+      labels:
+        app: main
+    spec:
+      containers:
+        - name: main
+          image: fusrodah2077/k8s:latest
+          ports:
+            - containerPort: 4000
+
+---
+# =======================
+# Service: main
+# =======================
+apiVersion: v1
+kind: Service
+metadata:
+  name: main
+spec:
+  type: ClusterIP
+  selector:
+    app: main
+  ports:
+    - port: 4000
+      targetPort: 4000
+
+---
+# =======================
+# Deployment: web1 (Tomcat)
+# =======================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web1
+  labels:
+    app: web1
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web1
+  template:
+    metadata:
+      labels:
+        app: web1
+    spec:
+      containers:
+        - name: web1
+          image: tomcat:8.5.38
+          ports:
+            - containerPort: 8080
+
+---
+# =======================
+# Service: web1
+# =======================
+apiVersion: v1
+kind: Service
+metadata:
+  name: web1
+spec:
+  type: ClusterIP
+  selector:
+    app: web1
+  ports:
+    - port: 80
+      targetPort: 8080
+
+---
+# =======================
+# Deployment: web2 (Nginx)
+# =======================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web2
+  labels:
+    app: web2
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: web2
+  template:
+    metadata:
+      labels:
+        app: web2
+    spec:
+      containers:
+        - name: web2
+          image: nginx:latest
+          ports:
+            - containerPort: 80
+
+---
+# =======================
+# Service: web2
+# =======================
+apiVersion: v1
+kind: Service
+metadata:
+  name: web2
+spec:
+  type: ClusterIP
+  selector:
+    app: web2
+  ports:
+    - port: 8080
+      targetPort: 80

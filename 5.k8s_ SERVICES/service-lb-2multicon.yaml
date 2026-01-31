@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deployment 
+  labels:
+    app : my-k8s-app 
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: KGB
+  template:
+    metadata:
+      labels:
+        project: KGB
+    spec:
+      containers:
+      - name:  kgb-web
+        image: fusrodah2077/k8s:latest
+        ports:
+        - containerPort: 4000 #Port on pod
+
+      - name:  not-kgb-web
+        image: tomcat:8.5.38
+        ports:
+        - containerPort: 8080 #Port on pod
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: myweb-service
+  labels:
+    app: my-k8s-app
+    owner: max
+spec:
+  selector:
+    project: KGB
+  type: LoadBalancer
+  ports:
+  - name: kgb-web
+    protocol: TCP
+    port: 80
+    targetPort: 4000
+
+  - name: not-kgb-web
+    protocol: TCP
+    port: 8888
+    targetPort: 8080

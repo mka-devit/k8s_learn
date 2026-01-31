@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Release.Name }}-service
+  labels:
+    app: {{ .Release.Name }}-deployment
+    env: production
+    owner: MaksimKotlyar
+spec:
+  selector:
+    project: {{ .Release.Name }}-app
+  ports:
+    - name: {{ .Release.Name }}-listener
+      protocol: TCP
+      port: 80
+      targetPort: {{ .Values.container.port }}
+  type: LoadBalancer

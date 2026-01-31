@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deployment 
+  labels:
+    app : my-k8s-app 
+spec:
+  selector:
+    matchLabels:
+      project: KGB
+  template:
+    metadata:
+      labels:
+        project: KGB
+    spec:
+      containers:
+      - name:  kgb-web
+        image: fusrodah2077/k8s:latest
+        ports:
+        - containerPort: 4000 

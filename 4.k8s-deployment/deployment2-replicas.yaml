@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myweb-deployment-replicas
+  labels:
+    app : my-k8s-app
+    environment: production
+    owner: Max
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      project: fbi
+  template:
+    metadata:
+      labels:
+        project: fbi
+    spec:
+      containers:
+      - name: fbi-web
+        image: fusrodah2077/k8s:latest
+        ports:
+        - containerPort: 4000

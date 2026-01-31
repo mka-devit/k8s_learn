@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: myweb-v1
+  labels:
+    version: v2  
+    environment: production 
+    app: main
+    tier: frontend
+    owner: Max
+spec:
+  containers:
+    - name: myweb-nginx-container 
+      image: nginx:latest 
+      ports:
+        - containerPorxqt: 80 
+
+    - name: myweb-apache-container
+      image: tomcat:latest 
+      ports:
+        - containerPort: 8080

@@ -1,0 +1,7 @@
+#Defoult values for Chart-Max Helm chart
+
+container:
+  image: fusrodah2077/k8s:latest   # Docker image
+  port: 4000          # Port on which the container will listen
+
+replicaCount: 4        # Number of replicas for the deployment

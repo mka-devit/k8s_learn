@@ -1,0 +1,16 @@
+apiVersion: v1  # Specifies the API version
+kind: Pod  # Specifies that this is a Pod resource
+metadata:
+  name: myweb-v1  # Name of the Pod
+  labels:
+    version: v2  
+    environment: production 
+    app: main
+    tier: frontend
+    owner: Max
+spec:
+  containers:
+    - name: myweb-container  # Name of the container within the Pod
+      image: nginx:latest  # Docker image to use for the container
+      ports:
+        - containerPort: 80  # Port that the container will listen on

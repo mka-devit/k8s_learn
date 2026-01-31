@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: max-deploy
+  labels:
+    app : my-k8s-app
+    environment: production
+    owner: Max
+spec:
+  selector:
+    matchLabels:
+      project: fbi
+  template:
+    metadata:
+      labels:
+        project: fbi # service selector uses this label to select pods
+    spec:
+      containers:
+      - name: fbi-web
+        image: fusrodah2077/k8s:latest
+        ports:
+        - containerPort: 4000
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata: 
+  name: myweb-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: max-deploy
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: max-service-lb
+  labels:
+    app : my-k8s-app
+    environment: production
+    owner: Max
+spec:
+  selector:
+    project: fbi
+  ports:
+    - name: applistener
+      protocol: TCP
+      port: 80 
+      targetPort: 4000 
+  type: LoadBalancer
